@@ -1,51 +1,100 @@
-# RecyclerViewSnap
+# GravitySnapHelper
 
-RecyclerView snapping example with SnapHelper
+A SnapHelper that snaps a RecyclerView to an edge.
 
-<img src="screens/snap_googleplay.gif" width=300></img>   <img src="screens/snap_final.gif" width=300></img>
-
-## How to
-
-If you need snapping support to start, top, end or bottom, use GravitySnapHelper.
+## Setup
 
 Add this to your build.gradle:
 
 ```groovy
-implementation 'com.github.rubensousa:gravitysnaphelper:1.5'
+implementation 'com.github.rubensousa:gravitysnaphelper:2.2.2'
 ```
 
-Otherwise, center snapping is done with LinearSnapHelper (part of the recyclerview-v7 package).
+## How to use
 
-### Snapping center:
+You can either create a GravitySnapHelper, or use GravitySnapRecyclerView.
 
-```java
-SnapHelper snapHelper = new LinearSnapHelper();
-snapHelper.attachToRecyclerView(recyclerView);
+If you want to use GravitySnapHelper directly, 
+you just need to create it and attach it to your RecyclerView:
+
+```kotlin
+val snapHelper = GravitySnapHelper(Gravity.START)
+snapHelper.attachToRecyclerView(recyclerView)
 ```
 
-### Snapping start with GravitySnapHelper:
+If you want to use GravitySnapRecyclerView, you can use the following xml attributes for customisation:
 
-```java
-startRecyclerView.setLayoutManager(new LinearLayoutManager(this,
-                LinearLayoutManager.HORIZONTAL, false));
-                
-SnapHelper snapHelperStart = new GravitySnapHelper(Gravity.START);
-snapHelperStart.attachToRecyclerView(startRecyclerView);
+```xml
+<attr name="snapGravity" format="enum">
+<attr name="snapEnabled" format="boolean" />
+<attr name="snapLastItem" format="boolean" />
+<attr name="snapToPadding" format="boolean" />
+<attr name="snapScrollMsPerInch" format="float" />
+<attr name="snapMaxFlingSizeFraction" format="float" />
 ```
 
-### Snapping top with GravitySnapHelper:
+Example:
 
-```java
-topRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-                
-SnapHelper snapHelperTop = new GravitySnapHelper(Gravity.TOP);
-snapHelperTop.attachToRecyclerView(topRecyclerView);
+```xml
+<com.github.rubensousa.gravitysnaphelper.GravitySnapRecyclerView
+    android:id="@+id/recyclerView"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    app:snapGravity="start" />
 ```
+
+## Start snapping
+
+```kotlin
+val snapHelper = GravitySnapHelper(Gravity.START)
+snapHelper.attachToRecyclerView(recyclerView)
+```
+
+<img src="screens/snap_start.gif" width=350></img>
+
+## Center snapping
+
+```kotlin
+val snapHelper = GravitySnapHelper(Gravity.CENTER)
+snapHelper.attachToRecyclerView(recyclerView)
+```
+
+<img src="screens/snap_center.gif" width=350></img>
+
+## Limiting fling distance
+
+If you use  **setMaxFlingSizeFraction** or **setMaxFlingDistance** 
+you can change the maximum fling distance allowed.
+
+<img src="screens/snap_fling.gif" width=350></img>
+
+
+## With decoration
+
+<img src="screens/snap_decoration.gif" width=350></img>
+
+## Features 
+
+1. **setMaxFlingDistance** or **setMaxFlingSizeFraction** - changes the max fling distance allowed.
+2. **setScrollMsPerInch** - changes the scroll speed.
+3. **setGravity** - changes the gravity of the SnapHelper.
+4. **setSnapToPadding** - enables snapping to padding (default is false)
+5. **smoothScrollToPosition** and **scrollToPosition**
+6. RTL support out of the box
+
+## Nested RecyclerViews
+
+Take a look at these blog posts if you're using nested RecyclerViews
+
+1. [Improving scrolling behavior of nested RecyclerViews](https://rubensousa.com/2019/08/16/nested_recyclerview_part1/)
+
+2. [Saving scroll state of nested RecyclerViews](https://rubensousa.com/2019/08/27/saving_scroll_state_of_nested_recyclerviews/)
+
 
 ## License
 
-    Copyright 2016 The Android Open Source Project
-    Copyright 2016 Rúben Sousa
+    Copyright 2018 The Android Open Source Project
+    Copyright 2019 Rúben Sousa
     
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
